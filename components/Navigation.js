@@ -1,5 +1,5 @@
 import * as React from "react"
-import { StyleSheet, View, Text } from "react-native"
+import { StyleSheet, View, Text, Image } from "react-native"
 import { NavigationContainer, useNavigation } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
@@ -15,6 +15,15 @@ const FeedScreen = () => (
   <Feed/>
 )
 
+function LogoTitle() {
+  return (
+    <Image
+      style={{ width: 50, height: 50 }}
+      source={require("../assets/favicon.png")}
+    />
+  )
+}
+
 const ProfileScreen = () => (
   <View style={styles.layout}>
     <Text style={styles.title}>Profile</Text>
@@ -26,34 +35,57 @@ const SignInScreen = () => {
   const navigation = useNavigation()
   return (
     <View style={styles.layout}>
-      <Text style={styles.title}>Sign In</Text>
-      <Button onPress={() => navigation.navigate("SignUp")}>Sign In</Button>
-    </View>
-  )
-}
-const SignUpScreen = () => {
-  const navigation = useNavigation()
-  return (
-    <View style={styles.layout}>
-      <Text style={styles.title}>Sign Up</Text>
-      <Button onPress={() => navigation.navigate("Main")}>Sign up</Button>
+      <Text style={styles.title}>Welcome to Woofstagram!</Text>
+      <Button onPress={() => navigation.navigate("SignUp", {name: "Awesome!"})}>Sign In</Button>
     </View>
   )
 }
 
 // --- App ---
 const MainNavigator = () => (
-  <Tab.Navigator>
-    <Tab.Screen name="Feed" component={FeedScreen} />
-    <Tab.Screen name="Profile" component={ProfileScreen} />
+  <Tab.Navigator screenOptions={{ headerShown: false}}>
+    <Tab.Screen
+      name="Feed"
+      component={FeedScreen}
+      options={({ route }) => ({
+        title: route.params.name,
+      })}
+    />
+    <Tab.Screen
+      name="Profile"
+      component={ProfileScreen}
+    />
   </Tab.Navigator>
 )
 
 export const Navigation = () => (
   <NavigationContainer>
-    <Stack.Navigator headerMode="none">
-      <Stack.Screen name="SignIn" component={SignInScreen} />
-      <Stack.Screen name="SignUp" component={SignUp} />
+    <Stack.Navigator
+      headerMode="none"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#f4511e",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    >
+      <Stack.Screen
+        name="SignIn"
+        component={SignInScreen}
+        options={{
+          headerTitle: (props) => <LogoTitle {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={({ route }) => ({
+          title: route.params.name,
+        })}
+      />
       <Stack.Screen name="Main" component={MainNavigator} />
     </Stack.Navigator>
   </NavigationContainer>

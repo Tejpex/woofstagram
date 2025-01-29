@@ -17,7 +17,10 @@ export const SignUp = () => {
           toy: "",
         }}
         onSubmit={(values) => {
-          navigation.navigate("Main")
+          navigation.navigate("Main", {
+            screen: 'Feed',
+            params: { name: values.petName },
+          })
           console.log(values)}
         }
       >
