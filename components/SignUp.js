@@ -1,7 +1,10 @@
 import { View, ScrollView, Text, TextInput, Button } from "react-native"
+import { useNavigation } from "@react-navigation/native"
 import { Formik } from "formik"
 
-const App = () => {
+export const SignUp = () => {
+  const navigation = useNavigation()
+
   return (
     <View style={{ flex: 1 }}>
       <Formik
@@ -13,7 +16,10 @@ const App = () => {
           breed: "",
           toy: "",
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          navigation.navigate("Main")
+          console.log(values)}
+        }
       >
         {({ handleChange, handleSubmit, values }) => (
           <ScrollView
@@ -78,15 +84,13 @@ const App = () => {
   )
 }
 
-export default App
-
 function confirmPasswordsMatch(confirmation, original) {
   if (confirmation !== original) {
     alert("Passwords do not match, please try again.")
   }
 }
 
-export const InputField = (props) => {
+const InputField = (props) => {
   return (
     <View style={{ padding: 16 }}>
       <Text style={{ fontSize: 18, marginBottom: 4 }}>{props.label}</Text>
@@ -109,6 +113,6 @@ export const InputField = (props) => {
   )
 }
 
-export const Heading = (props) => {
+const Heading = (props) => {
   return <Text style={{ fontSize: 24, fontWeight: "bold" }}>{props.text}</Text>
 }
